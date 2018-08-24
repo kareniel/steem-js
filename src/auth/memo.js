@@ -1,9 +1,9 @@
-
 import ByteBuffer from 'bytebuffer'
 import assert from 'assert'
 import base58 from 'bs58'
 import {Aes, PrivateKey, PublicKey} from './ecc'
 import {ops} from './serializer'
+import config from '../config'
 
 const encMemo = ops.encrypted_memo
 
@@ -89,13 +89,13 @@ let encodeTest = undefined
   Memo encryption has failed in the browser before.  An Error will be thrown
   if a memo can't be encrypted and decrypted.
 */
-function checkEncryption() {
+function checkEncryption(address_prefix = config.get('address_prefix')) {
   if(encodeTest === undefined) {
     let plaintext;
     encodeTest = true // prevent infinate looping
     try {
       const wif = '5JdeC9P7Pbd1uGdFVEsJ41EkEnADbbHGq6p1BwFxm6txNBsQnsw'
-      const pubkey = 'STM8m5UgaFAAYQRuaNejYdS8FVLVp9Ss3K1qAVk5de6F8s3HnVbvA'
+      const pubkey = `${address_prefix}8m5UgaFAAYQRuaNejYdS8FVLVp9Ss3K1qAVk5de6F8s3HnVbvA`
       const cyphertext = encode(wif, pubkey, '#memo爱')
       plaintext = decode(wif, cyphertext)
     } catch(e) {
